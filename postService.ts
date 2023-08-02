@@ -1,18 +1,13 @@
-import {Post} from "./models/Post";
 import {Request, Response} from "express";
-import PostService from "./postService";
+import {Post} from "./models/Post";
 
-export class PostController{
-    static async create(req:Request, res:Response){
-        try{
-            const post = await PostService.create(req.body);
-            res.json(post);
-        } catch (e) {
-            res.status(500).json(e);
-        }
+class PostService {
+    async create(post: any){
+        const createdPost = await Post.create(post);
+        return createdPost;
     }
 
-    static async getAll(req: Request, res: Response){
+    async getAll(req: Request, res: Response){
         try{
             const posts = await Post.findAll();
             return res.json(posts);
@@ -21,7 +16,7 @@ export class PostController{
         }
     }
 
-    static async getOne(req: Request, res: Response){
+    async getOne(req: Request, res: Response){
         try{
             const {id} = req.params;
             if(!id){
@@ -34,7 +29,7 @@ export class PostController{
         }
     }
 
-    static async update(req: Request, res: Response){
+    async update(req: Request, res: Response){
         try{
             const post = req.body;
             if(!post.id){
@@ -52,7 +47,7 @@ export class PostController{
         }
     }
 
-    static async delete(req: Request, res: Response){
+    async delete(req: Request, res: Response){
         try{
             const {id} = req.params;
             if(!id){
@@ -70,3 +65,5 @@ export class PostController{
         }
     }
 }
+
+export default new PostService();
